@@ -1,146 +1,138 @@
 backend:
   name: git-gateway
-  branch: main
+  branch: main # Değişiklikler direkt bu branşa kaydedilir
 
-# Medya yükleme ayarları
-media_folder: "img/uploads"
-public_folder: "/img/uploads"
+media_folder: "img/uploads" # Görsellerin fiziksel yeri
+public_folder: "/img/uploads" # Sitedeki görünen yolu
 
-# Türkçe arayüz
-locale: "tr"
+locale: "tr" # Panel dili Türkçe
+site_url: https://shdanismanlik.com
+display_url: https://shdanismanlik.com
 
-# Site bilgileri (soldaki login panelini kaldırır)
-site_url: https://stkdanismanlik.com
-display_url: https://stkdanismanlik.com
-logo_url: https://stkdanismanlik.com/img/logo.png
-
-# ===== İÇERİK KOLEKSİYONLARI =====
 collections:
+  # 1. KATEGORİ YÖNETİMİ (Buradan ekleme/çıkarma yaparsan Blog ve Hizmetlerde anında görünür)
+  - name: "categories"
+    label: "🏷️ Kategori Yönetimi"
+    folder: "_content/categories"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Kategori Adı", name: "title", widget: "string"}
+      - {label: "Kategori Türü", name: "type", widget: "select", options: ["Blog", "Hizmet"]}
 
-  # ANA SAYFA
-  - name: "homepage"
-    label: "🏠 Ana Sayfa"
-    files:
-      - label: "Ana Sayfa İçeriği"
-        name: "homepage"
-        file: "_data/homepage.yml"
+  # 2. BLOG YÖNETİMİ (SEO ve Yan Menü Destekli)
+  - name: "blog"
+    label: "📰 Blog & Makaleler"
+    folder: "_content/blog"
+    create: true # Ekleme/Silme aktif
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Başlık (H1)", name: "title", widget: "string"}
+      - {label: "Yayın Tarihi", name: "date", widget: "datetime"}
+      - {label: "Kapak Görseli", name: "featured_image", widget: "image"}
+      
+      # Dinamik Kategori Seçimi (Kategoriler koleksiyonundan çeker)
+      - label: "Kategori Seç"
+        name: "category"
+        widget: "relation"
+        collection: "categories"
+        search_fields: ["title"]
+        value_field: "title"
+        display_fields: ["title"]
+
+      - label: "SEO Ayarları"
+        name: "seo"
+        widget: "object"
         fields:
-          - label: "Slider / Banner"
-            name: "slider"
-            widget: "list"
-            max: 5
-            fields:
-              - {label: "Başlık", name: "title", widget: "string"}
-              - {label: "Alt Başlık", name: "subtitle", widget: "text"}
-              - {label: "Buton Yazısı", name: "button_text", widget: "string"}
-              - {label: "Buton Linki", name: "button_link", widget: "string"}
-              - {label: "Görsel", name: "image", widget: "image"}
+          - {label: "SEO Başlığı (Title Tag)", name: "seo_title", widget: "string"}
+          - {label: "SEO Açıklaması (Meta Description)", name: "seo_desc", widget: "text"}
+          - {label: "Anahtar Kelimeler", name: "keywords", widget: "string"}
 
-          - label: "İstatistikler"
-            name: "stats"
-            widget: "list"
-            max: 4
-            fields:
-              - {label: "Sayı", name: "number", widget: "number"}
-              - {label: "Açıklama", name: "label", widget: "string"}
+      - {label: "Kısa Özet", name: "excerpt", widget: "text"}
+      - {label: "Makale İçeriği", name: "body", widget: "markdown"}
+      
+      # Yan Sidebar Ayarları
+      - label: "Yan Menü (Sidebar) Ayarları"
+        name: "sidebar"
+        widget: "object"
+        fields:
+          - {label: "Sidebar Görünsün mü?", name: "show_sidebar", widget: "boolean", default: true}
+          - {label: "Sidebar Buton Yazısı", name: "cta_text", widget: "string", default: "Ücretsiz Ön Görüşme"}
+          - {label: "Sidebar Buton Linki", name: "cta_link", widget: "string", default: "iletisim.html"}
 
-  # HİZMETLER
+  # 3. HİZMETLER (Kuruluş, Mali, Yasal vb.)
   - name: "services"
-    label: "🛠️ Hizmetler"
-    folder: "_hizmetler"
+    label: "🛠️ Hizmetlerimiz"
+    folder: "_content/services"
     create: true
     slug: "{{slug}}"
     fields:
       - {label: "Hizmet Adı", name: "title", widget: "string"}
-      - {label: "Sıralama (1-10)", name: "order", widget: "number", default: 1}
-      - label: "Kategori"
-        name: "category"
-        widget: "select"
-        options:
-          - {label: "Dernek Kuruluşu", value: "dernek"}
-          - {label: "Vakıf Kuruluşu", value: "vakif"}
-          - {label: "Mali Danışmanlık", value: "mali"}
-          - {label: "Yasal Danışmanlık", value: "hukuki"}
-      - {label: "Kısa Açıklama", name: "excerpt", widget: "text"}
+      - {label: "İkon (FontAwesome Sınıfı)", name: "icon", widget: "string", default: "fas fa-balance-scale"}
+      - label: "Hizmet Kategorisi"
+        name: "service_cat"
+        widget: "relation"
+        collection: "categories"
+        search_fields: ["title"]
+        value_field: "title"
+        display_fields: ["title"]
+      - {label: "Hizmet Görseli (Banner)", name: "image", widget: "image"}
+      - {label: "Açıklama", name: "excerpt", widget: "text"}
       - {label: "Detaylı İçerik", name: "body", widget: "markdown"}
-      - {label: "Görsel", name: "image", widget: "image", required: false}
-      - {label: "Yayında mı?", name: "published", widget: "boolean", default: true}
+      - label: "Adımlı Süreç (Örn: 7 Adımda Kurulum)"
+        name: "steps"
+        widget: "list"
+        fields:
+          - {label: "Adım No", name: "step_no", widget: "number"}
+          - {label: "Adım Başlığı", name: "step_title", widget: "string"}
+          - {label: "Adım Açıklaması", name: "step_desc", widget: "text"}
 
-  # BLOG
-  - name: "blog"
-    label: "📰 Blog & Makaleler"
-    folder: "_blog"
+  # 4. REFERANSLAR (Logolar ve Yorumlar)
+  - name: "referanslar"
+    label: "⭐ Referanslar & Logolar"
+    folder: "_content/referanslar"
     create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      - {label: "Başlık", name: "title", widget: "string"}
-      - {label: "Yayın Tarihi", name: "date", widget: "datetime"}
-      - {label: "Yazar", name: "author", widget: "string", default: "SH Danışmanlık"}
-      - label: "Kategori"
-        name: "category"
-        widget: "select"
-        options: ["Mevzuat", "Hibe Fırsatı", "Bilgi Notu", "Duyuru"]
-      - {label: "Görsel", name: "featured_image", widget: "image", required: false}
-      - {label: "Özet", name: "excerpt", widget: "text"}
-      - {label: "İçerik", name: "body", widget: "markdown"}
-      - {label: "Yayında mı?", name: "published", widget: "boolean", default: true}
+      - {label: "Kurum Adı", name: "title", widget: "string"}
+      - {label: "Kurum Logosu", name: "logo", widget: "image"}
+      - {label: "Müşteri Yorumu (Opsiyonel)", name: "quote", widget: "text", required: false}
+      - {label: "Yetkili Adı", name: "author", widget: "string", required: false}
 
-  # SSS
+  # 5. SSS (Sıkça Sorulan Sorular)
   - name: "faq"
-    label: "❓ SSS Yönetimi"
-    folder: "_sss"
+    label: "❓ SSS"
+    folder: "_content/faq"
     create: true
-    slug: "soru-{{order}}"
     fields:
       - {label: "Soru", name: "question", widget: "string"}
       - {label: "Cevap", name: "answer", widget: "markdown"}
-      - {label: "Sıralama", name: "order", widget: "number", default: 1}
-      - label: "Kategori"
-        name: "category"
-        widget: "select"
-        options: ["Genel", "Dernek", "Vakıf", "Mali", "Hukuki"]
-      - {label: "Yayında mı?", name: "published", widget: "boolean", default: true}
+      - {label: "Sıra No", name: "weight", widget: "number", default: 0}
 
-  # REFERANSLAR
-  - name: "references"
-    label: "⭐ Referanslar"
-    folder: "_referanslar"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - {label: "Ad Soyad", name: "name", widget: "string"}
-      - {label: "Kurum / Ünvan", name: "company", widget: "string"}
-      - {label: "Yorum", name: "comment", widget: "text"}
-      - {label: "Puan (1-5)", name: "rating", widget: "number", default: 5, min: 1, max: 5}
-      - {label: "Fotoğraf", name: "avatar", widget: "image", required: false}
-      - {label: "Yayında mı?", name: "published", widget: "boolean", default: true}
-
-  # SİTE AYARLARI
+  # 6. GENEL SİTE YAPISI (Header, Footer, WhatsApp)
   - name: "settings"
-    label: "⚙️ Site Ayarları"
+    label: "⚙️ Global Ayarlar"
+    delete: false # Yanlışlıkla silinmemeli
     files:
-      - label: "Genel Ayarlar"
-        name: "general"
-        file: "_data/settings/general.yml"
-        fields:
-          - {label: "Site Başlığı", name: "site_title", widget: "string"}
-          - {label: "Site Sloganı", name: "site_tagline", widget: "string"}
-          - {label: "Logo", name: "logo", widget: "image", required: false}
-
-      - label: "İletişim Bilgileri"
+      - label: "İletişim ve WhatsApp"
         name: "contact"
-        file: "_data/settings/contact.yml"
+        file: "_data/contact.yml"
         fields:
           - {label: "Telefon", name: "phone", widget: "string"}
-          - {label: "WhatsApp", name: "whatsapp", widget: "string"}
-          - {label: "Email", name: "email", widget: "string"}
+          - {label: "WhatsApp Numarası (905...) ", name: "whatsapp", widget: "string"}
+          - {label: "WhatsApp Buton Yazısı", name: "wa_label", widget: "string"}
+          - {label: "E-Posta", name: "email", widget: "string"}
           - {label: "Adres", name: "address", widget: "text"}
-          - {label: "Şehir", name: "city", widget: "string"}
 
-      - label: "Sosyal Medya"
-        name: "social"
-        file: "_data/settings/social.yml"
+      - label: "Footer (Alt Menü)"
+        name: "footer"
+        file: "_data/footer.yml"
         fields:
-          - {label: "Facebook", name: "facebook", widget: "string", required: false}
-          - {label: "Instagram", name: "instagram", widget: "string", required: false}
-          - {label: "LinkedIn", name: "linkedin", widget: "string", required: false}
+          - {label: "Footer Sloganı", name: "footer_slogan", widget: "string"}
+          - {label: "Telif Hakkı Yazısı", name: "copyright", widget: "string"}
+          - label: "Sosyal Medya Linkleri"
+            name: "social"
+            widget: "object"
+            fields:
+              - {label: "LinkedIn", name: "linkedin", widget: "string"}
+              - {label: "Instagram", name: "instagram", widget: "string"}
+              - {label: "Twitter/X", name: "twitter", widget: "string"}
