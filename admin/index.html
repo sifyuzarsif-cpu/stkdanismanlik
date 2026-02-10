@@ -5,61 +5,141 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SH Danışmanlık — Yönetim Paneli</title>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
-    :root {
-      --primary: #0d6efd; --primary-dark: #0b5ed7; --primary-light: #e8f0fe;
-      --dark: #1a1a2e; --text: #4a5568; --border: #e2e8f0; --shadow: 0 25px 60px rgba(0,0,0,0.35);
-    }
+    /* ==================== GENEL STILLLER ==================== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: var(--dark); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; overflow: hidden; }
     
-    /* CMS'İN OTOMATİK OLUŞTURDUĞU GRİ BUTONU GİZLE */
-    #nc-root button, .nc-github-authentication-button { display: none !important; }
+    body { 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0f172a;
+      color: #1e293b;
+    }
 
-    .bg-orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.15; animation: float 20s infinite; pointer-events: none; }
-    .bg-orb-1 { width: 600px; height: 600px; background: #0d6efd; top: -200px; left: -200px; }
-    .bg-orb-2 { width: 500px; height: 500px; background: #7c3aed; bottom: -150px; right: -150px; }
-    @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -20px); } }
-
-    .card { position: relative; z-index: 10; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(20px); border-radius: 24px; box-shadow: var(--shadow); width: 100%; max-width: 480px; overflow: hidden; }
-    .card-header { background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%); padding: 36px 40px; text-align: center; color: white; }
-    .brand-logo { width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 15px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; }
-    .card-body { padding: 32px 40px; }
-
-    .login-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; margin-bottom: 20px; }
-    .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(13, 110, 253, 0.4); }
+    /* ==================== CMS PANEL DÜZENLEMELERİ ==================== */
     
-    .info-box { background: var(--primary-light); border-radius: 12px; padding: 15px; margin-bottom: 20px; font-size: 0.85rem; }
-    .security-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-    .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; border: 1px solid #bfdbfe; color: var(--primary); }
-    .card-footer { padding: 15px; background: #f8fafc; border-top: 1px solid var(--border); text-align: center; font-size: 0.75rem; color: #a0aec0; }
+    /* SOLDAKİ GİRİŞ PANELINI TAMAMEN GİZLE */
+    [class*="AppHeader"] [class*="LoginButton"],
+    [class*="AppHeader"] button,
+    [class*="AppHeader"] [class*="Button"],
+    button[data-testid*="login"],
+    button[data-testid*="logout"] {
+      display: none !important;
+    }
+
+    /* SAĞ ÜSTTE SADECE PROFİL DROPDOWN KALSIN */
+    [class*="AppHeader"] > div > div:last-child {
+      margin-right: 0 !important;
+    }
+
+    /* APP KONTEYNIRINI DÜZELT - SAĞA KAYMAYI ÖNLE */
+    [class*="App"] {
+      margin-left: 0 !important;
+      padding-left: 0 !important;
+    }
+
+    /* SIDEBAR VARSA ONU DA GİZLE */
+    [class*="Sidebar"] {
+      display: none !important;
+    }
+
+    /* MAIN CONTENT GENİŞLİĞİNİ TAM YAP */
+    [class*="MainContent"],
+    [class*="EditorContainer"] {
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 20px !important;
+    }
+
+    /* HEADER'I DÜZENLE */
+    [class*="AppHeader"] {
+      background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%) !important;
+      border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+      padding: 0 24px !important;
+    }
+
+    /* KOLEKSIYON LİSTESİNİ GÜZELLEŞTİR */
+    [class*="CollectionTop"] {
+      background: white !important;
+      border-radius: 12px !important;
+      padding: 24px !important;
+      margin-bottom: 20px !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    }
+
+    /* BUTONLARI MODERNLEŞTIR */
+    button[class*="Button"] {
+      border-radius: 8px !important;
+      font-weight: 500 !important;
+      transition: all 0.2s !important;
+    }
+
+    button[class*="Button"]:hover {
+      transform: translateY(-1px) !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    }
+
+    /* KARTLARI GÜZELLEŞTİR */
+    [class*="Card"] {
+      border-radius: 12px !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    }
+
+    /* GİRİŞ EKRANI AYARLARI */
+    [class*="AuthenticationPage"] {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+    }
+
+    /* TOAST BİLDİRİMLERİ */
+    [class*="Toast"] {
+      border-radius: 12px !important;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2) !important;
+    }
+
+    /* SCROLLBAR DÜZENLEMESİ */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* RESPONSIVE DÜZENLEMELER */
+    @media (max-width: 768px) {
+      [class*="MainContent"] {
+        padding: 12px !important;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="bg-orb bg-orb-1"></div>
-  <div class="bg-orb bg-orb-2"></div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="brand-logo"><svg width="30" height="30" fill="white" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-      <h2>SH Danışmanlık</h2>
-      <p style="font-size: 0.8rem; opacity: 0.8;">Yönetim Paneli</p>
-    </div>
-    <div class="card-body">
-      <div class="info-box">Lütfen sisteme erişmek için yetkili hesabınızla giriş yapın.</div>
-      <button class="login-btn" id="loginBtn" onclick="window.netlifyIdentity.open('login')">Güvenli Giriş Yap</button>
-      <div class="security-badges">
-        <div class="badge">SSL Şifreli</div>
-        <div class="badge">Netlify Identity</div>
-      </div>
-    </div>
-    <div class="card-footer">
-      Decap CMS 3.3.3 • <a href="/" style="color: var(--primary); text-decoration: none;">↗ Siteye Dön</a>
-    </div>
-  </div>
-
-  <!-- Decap CMS Scripti -->
+  <!-- Netlify CMS yüklenecek -->
   <script src="https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js"></script>
+  
+  <script>
+    // Netlify Identity widget'ı başlat
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+  </script>
 </body>
 </html>

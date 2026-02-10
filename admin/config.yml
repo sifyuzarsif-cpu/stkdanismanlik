@@ -1,29 +1,23 @@
 backend:
   name: git-gateway
   branch: main
-  commit_messages:
-    create: 'içerik: {{collection}} - {{slug}} oluşturuldu'
-    update: 'içerik: {{collection}} - {{slug}} güncellendi'
-    delete: 'içerik: {{collection}} - {{slug}} silindi'
-    uploadMedia: 'medya: {{path}} yüklendi'
-    deleteMedia: 'medya: {{path}} silindi'
 
-# Medya
+# Medya yükleme ayarları
 media_folder: "img/uploads"
 public_folder: "/img/uploads"
 
-# Türkçe
+# Türkçe arayüz
 locale: "tr"
 
-# Editör önizleme
-show_preview_links: true
+# Site bilgileri (soldaki login panelini kaldırır)
+site_url: https://stkdanismanlik.com
+display_url: https://stkdanismanlik.com
+logo_url: https://stkdanismanlik.com/img/logo.png
 
-# ===== KOLEKSİYONLAR =====
+# ===== İÇERİK KOLEKSİYONLARI =====
 collections:
 
-  # ─────────────────────────────
-  # 1. ANA SAYFA
-  # ─────────────────────────────
+  # ANA SAYFA
   - name: "homepage"
     label: "🏠 Ana Sayfa"
     files:
@@ -31,60 +25,34 @@ collections:
         name: "homepage"
         file: "_data/homepage.yml"
         fields:
-          - label: "🎯 Slider / Banner"
+          - label: "Slider / Banner"
             name: "slider"
             widget: "list"
-            label_singular: "Slayt"
             max: 5
             fields:
               - {label: "Başlık", name: "title", widget: "string"}
               - {label: "Alt Başlık", name: "subtitle", widget: "text"}
               - {label: "Buton Yazısı", name: "button_text", widget: "string"}
               - {label: "Buton Linki", name: "button_link", widget: "string"}
-              - {label: "Arka Plan Görseli", name: "image", widget: "image"}
+              - {label: "Görsel", name: "image", widget: "image"}
 
-          - label: "📊 İstatistikler"
+          - label: "İstatistikler"
             name: "stats"
             widget: "list"
-            label_singular: "İstatistik"
             max: 4
             fields:
               - {label: "Sayı", name: "number", widget: "number"}
               - {label: "Açıklama", name: "label", widget: "string"}
 
-          - label: "📝 Hakkımızda (Özet)"
-            name: "about"
-            widget: "object"
-            fields:
-              - {label: "Başlık", name: "title", widget: "string"}
-              - {label: "Alt Başlık", name: "subtitle", widget: "string"}
-              - {label: "İçerik", name: "content", widget: "text"}
-              - {label: "Görsel", name: "image", widget: "image", required: false}
-
-  # ─────────────────────────────
-  # 2. HİZMETLER
-  # ─────────────────────────────
+  # HİZMETLER
   - name: "services"
     label: "🛠️ Hizmetler"
     folder: "_hizmetler"
     create: true
     slug: "{{slug}}"
-    summary: "{{title}} — {{category}}"
-    sortable_fields: ["title", "order", "category"]
-    view_filters:
-      - label: "Dernek"
-        field: category
-        pattern: "dernek"
-      - label: "Vakıf"
-        field: category
-        pattern: "vakif"
-      - label: "Mali"
-        field: category
-        pattern: "mali"
     fields:
       - {label: "Hizmet Adı", name: "title", widget: "string"}
-      - {label: "URL (otomatik)", name: "slug", widget: "string", required: false, hint: "Boş bırakın, otomatik oluşturulur"}
-      - {label: "Sıralama (1-10)", name: "order", widget: "number", default: 1, value_type: "int", min: 1, max: 10}
+      - {label: "Sıralama (1-10)", name: "order", widget: "number", default: 1}
       - label: "Kategori"
         name: "category"
         widget: "select"
@@ -93,192 +61,86 @@ collections:
           - {label: "Vakıf Kuruluşu", value: "vakif"}
           - {label: "Mali Danışmanlık", value: "mali"}
           - {label: "Yasal Danışmanlık", value: "hukuki"}
-          - {label: "DERBİS İşlemleri", value: "derbis"}
-          - {label: "Genel Kurul", value: "genel-kurul"}
-          - {label: "Proje ve Fon", value: "proje"}
-          - {label: "Diğer", value: "diger"}
-      - {label: "Kısa Açıklama (Kart için)", name: "excerpt", widget: "text", hint: "Maksimum 150 karakter"}
+      - {label: "Kısa Açıklama", name: "excerpt", widget: "text"}
       - {label: "Detaylı İçerik", name: "body", widget: "markdown"}
-      - {label: "Öne Çıkan Görsel", name: "image", widget: "image", required: false}
+      - {label: "Görsel", name: "image", widget: "image", required: false}
       - {label: "Yayında mı?", name: "published", widget: "boolean", default: true}
-      - {label: "Öne Çıkar (Ana sayfada göster)", name: "featured", widget: "boolean", default: false}
 
-  # ─────────────────────────────
-  # 3. BLOG / MAKALELER
-  # ─────────────────────────────
+  # BLOG
   - name: "blog"
     label: "📰 Blog & Makaleler"
     folder: "_blog"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    summary: "{{title}} | {{date}} | {{category}}"
-    sortable_fields: ["title", "date", "category"]
-    view_filters:
-      - label: "Mevzuat"
-        field: category
-        pattern: "Mevzuat"
-      - label: "Hibe"
-        field: category
-        pattern: "Hibe"
-      - label: "Bilgi Notu"
-        field: category
-        pattern: "Bilgi Notu"
-    view_groups:
-      - label: "Kategoriye Göre"
-        field: category
     fields:
       - {label: "Başlık", name: "title", widget: "string"}
-      - {label: "Yayın Tarihi", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false}
+      - {label: "Yayın Tarihi", name: "date", widget: "datetime"}
       - {label: "Yazar", name: "author", widget: "string", default: "SH Danışmanlık"}
       - label: "Kategori"
         name: "category"
         widget: "select"
-        options:
-          - "Mevzuat"
-          - "Hibe Fırsatı"
-          - "Bilgi Notu"
-          - "Duyuru"
-          - "Rehber"
-      - {label: "Etiketler", name: "tags", widget: "list", allow_add: true, required: false, hint: "Enter ile ekleyin"}
-      - {label: "Öne Çıkan Görsel", name: "featured_image", widget: "image", required: false}
-      - {label: "Meta Açıklama (SEO)", name: "description", widget: "text", required: false, hint: "Google'da görünecek açıklama, max 160 karakter"}
-      - {label: "Özet", name: "excerpt", widget: "text", hint: "Kart görünümü için kısa özet"}
+        options: ["Mevzuat", "Hibe Fırsatı", "Bilgi Notu", "Duyuru"]
+      - {label: "Görsel", name: "featured_image", widget: "image", required: false}
+      - {label: "Özet", name: "excerpt", widget: "text"}
       - {label: "İçerik", name: "body", widget: "markdown"}
       - {label: "Yayında mı?", name: "published", widget: "boolean", default: true}
-      - {label: "Öne Çıkar", name: "featured", widget: "boolean", default: false}
 
-  # ─────────────────────────────
-  # 4. SSS (SIKÇA SORULAN SORULAR)
-  # ─────────────────────────────
+  # SSS
   - name: "faq"
     label: "❓ SSS Yönetimi"
     folder: "_sss"
     create: true
     slug: "soru-{{order}}"
-    summary: "{{question}}"
-    sortable_fields: ["order", "category"]
     fields:
       - {label: "Soru", name: "question", widget: "string"}
       - {label: "Cevap", name: "answer", widget: "markdown"}
-      - {label: "Sıralama", name: "order", widget: "number", default: 1, value_type: "int", min: 1, max: 50}
+      - {label: "Sıralama", name: "order", widget: "number", default: 1}
       - label: "Kategori"
         name: "category"
         widget: "select"
-        options:
-          - {label: "Genel", value: "genel"}
-          - {label: "Dernek", value: "dernek"}
-          - {label: "Vakıf", value: "vakif"}
-          - {label: "Mali", value: "mali"}
-          - {label: "Hukuki", value: "hukuki"}
+        options: ["Genel", "Dernek", "Vakıf", "Mali", "Hukuki"]
       - {label: "Yayında mı?", name: "published", widget: "boolean", default: true}
-      - {label: "Ana sayfada göster?", name: "show_homepage", widget: "boolean", default: false}
 
-  # ─────────────────────────────
-  # 5. REFERANSLAR
-  # ─────────────────────────────
+  # REFERANSLAR
   - name: "references"
-    label: "⭐ Referanslar & Yorumlar"
+    label: "⭐ Referanslar"
     folder: "_referanslar"
     create: true
     slug: "{{slug}}"
-    summary: "{{name}} — {{company}}"
     fields:
       - {label: "Ad Soyad", name: "name", widget: "string"}
       - {label: "Kurum / Ünvan", name: "company", widget: "string"}
       - {label: "Yorum", name: "comment", widget: "text"}
-      - {label: "Puan (1-5)", name: "rating", widget: "number", default: 5, value_type: "int", min: 1, max: 5}
+      - {label: "Puan (1-5)", name: "rating", widget: "number", default: 5, min: 1, max: 5}
       - {label: "Fotoğraf", name: "avatar", widget: "image", required: false}
-      - {label: "Tarih", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false}
-      - {label: "Yayında mı?", name: "published", widget: "boolean", default: true}
-      - {label: "Öne Çıkar (Ana sayfada göster)", name: "featured", widget: "boolean", default: false}
-
-  # ─────────────────────────────
-  # 6. MEVZUATLAR
-  # ─────────────────────────────
-  - name: "mevzuat"
-    label: "📜 Mevzuatlar"
-    folder: "_mevzuat"
-    create: true
-    slug: "{{slug}}"
-    summary: "{{title}} — {{type}}"
-    fields:
-      - {label: "Başlık", name: "title", widget: "string"}
-      - label: "Mevzuat Türü"
-        name: "type"
-        widget: "select"
-        options:
-          - {label: "Kanun", value: "kanun"}
-          - {label: "Yönetmelik", value: "yonetmelik"}
-          - {label: "Genelge", value: "genelge"}
-          - {label: "Tebliğ", value: "teblig"}
-          - {label: "Karar", value: "karar"}
-      - {label: "Resmi Gazete Tarihi", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false, required: false}
-      - {label: "Resmi Gazete Sayısı", name: "gazette_no", widget: "string", required: false}
-      - {label: "Açıklama / Özet", name: "description", widget: "text"}
-      - {label: "İçerik", name: "body", widget: "markdown", required: false}
-      - {label: "Harici Link (Resmi Gazete)", name: "external_link", widget: "string", required: false}
       - {label: "Yayında mı?", name: "published", widget: "boolean", default: true}
 
-  # ─────────────────────────────
-  # 7. SİTE AYARLARI
-  # ─────────────────────────────
+  # SİTE AYARLARI
   - name: "settings"
     label: "⚙️ Site Ayarları"
     files:
-
-      - label: "🌐 Genel Site Ayarları"
+      - label: "Genel Ayarlar"
         name: "general"
         file: "_data/settings/general.yml"
         fields:
           - {label: "Site Başlığı", name: "site_title", widget: "string"}
           - {label: "Site Sloganı", name: "site_tagline", widget: "string"}
-          - {label: "Meta Açıklama (SEO)", name: "meta_description", widget: "text", hint: "Google'da görünecek açıklama"}
           - {label: "Logo", name: "logo", widget: "image", required: false}
-          - {label: "Favicon", name: "favicon", widget: "image", required: false}
-          - {label: "Google Analytics ID", name: "ga_id", widget: "string", required: false, hint: "G-XXXXXXXXXX formatında"}
 
-      - label: "📞 İletişim Bilgileri"
+      - label: "İletişim Bilgileri"
         name: "contact"
         file: "_data/settings/contact.yml"
         fields:
           - {label: "Telefon", name: "phone", widget: "string"}
-          - {label: "WhatsApp Numarası", name: "whatsapp", widget: "string", hint: "Başında + ve ülke kodu ile, örn: +905341234567"}
+          - {label: "WhatsApp", name: "whatsapp", widget: "string"}
           - {label: "Email", name: "email", widget: "string"}
           - {label: "Adres", name: "address", widget: "text"}
-          - {label: "İlçe / Şehir", name: "city", widget: "string"}
-          - {label: "Google Maps Embed Kodu", name: "maps_embed", widget: "text", required: false}
-          - label: "Çalışma Saatleri"
-            name: "working_hours"
-            widget: "list"
-            label_singular: "Gün"
-            fields:
-              - {label: "Gün", name: "day", widget: "string", hint: "örn: Pazartesi - Cuma"}
-              - {label: "Saat", name: "hours", widget: "string", hint: "örn: 09:00 - 18:00"}
+          - {label: "Şehir", name: "city", widget: "string"}
 
-      - label: "📱 Sosyal Medya"
+      - label: "Sosyal Medya"
         name: "social"
         file: "_data/settings/social.yml"
         fields:
           - {label: "Facebook", name: "facebook", widget: "string", required: false}
-          - {label: "Twitter / X", name: "twitter", widget: "string", required: false}
           - {label: "Instagram", name: "instagram", widget: "string", required: false}
           - {label: "LinkedIn", name: "linkedin", widget: "string", required: false}
-          - {label: "YouTube", name: "youtube", widget: "string", required: false}
-
-      - label: "🔔 Popup / Duyuru Bandı"
-        name: "announcement"
-        file: "_data/settings/announcement.yml"
-        fields:
-          - {label: "Duyuru Bandını Aktif Et", name: "enabled", widget: "boolean", default: false}
-          - {label: "Duyuru Metni", name: "text", widget: "string", required: false}
-          - {label: "Buton Yazısı", name: "button_text", widget: "string", required: false}
-          - {label: "Buton Linki", name: "button_link", widget: "string", required: false}
-          - label: "Renk"
-            name: "color"
-            widget: "select"
-            required: false
-            options:
-              - {label: "Mavi", value: "blue"}
-              - {label: "Yeşil", value: "green"}
-              - {label: "Kırmızı", value: "red"}
-              - {label: "Turuncu", value: "orange"}
