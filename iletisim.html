@@ -167,12 +167,17 @@ map_embed_url: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3008.8251!
                 </div>
             </div>
 
-            <!-- SAĞ SÜTUN: İLETİŞİM FORMU -->
+           <!-- SAĞ SÜTUN: İLETİŞİM FORMU -->
             <div class="contact-form-side">
                 <h2>{{ form_title }}</h2>
                 <p style="margin-bottom: 25px; color: #666;">{{ form_subtitle }}</p>
 
-                <form class="contact-form" action="{{ form_action }}" method="POST">
+                <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+                    <!-- Web3Forms -->
+                    <input type="hidden" name="access_key" value="4fe328a0-e03e-4479-85cf-b2b076f4335b">
+                    <input type="hidden" name="subject" value="Yeni Danışmanlık Talebi - SH Danışmanlık">
+                    <input type="hidden" name="redirect" value="https://stkdanismanlik.com/tesekkurler/">
+
                     <div class="form-group">
                         <input type="text" name="name" placeholder="Adınız Soyadınız *" required>
                     </div>
