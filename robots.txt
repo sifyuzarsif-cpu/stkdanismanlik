@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /tesekkurler/
+
+Sitemap: https://stkdanismanlik.com/sitemap.xml
