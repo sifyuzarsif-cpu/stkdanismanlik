@@ -68,3 +68,5 @@ module.exports = function(eleventyConfig) {
     markdownTemplateEngine: "njk"
   };
 };
+eleventyConfig.addPassthroughCopy("sitemap.xml");
+eleventyConfig.addPassthroughCopy("robots.txt");
