@@ -9,6 +9,8 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("admin");
   eleventyConfig.addPassthroughCopy("logo.webp");
   eleventyConfig.addPassthroughCopy("email-templates");
+  eleventyConfig.addPassthroughCopy("sitemap.xml");
+  eleventyConfig.addPassthroughCopy("robots.txt");
 
   // Blog koleksiyonu
   eleventyConfig.addCollection("blog", function(collectionApi) {
@@ -33,10 +35,10 @@ module.exports = function(eleventyConfig) {
       return JSON.parse(raw);
     } catch(e) {
       return {
-        site_name: "SH Danışmanlık",
+        site_name: "STK Danışmanlık",
         phone: "+90 534 705 42 34",
         phone_raw: "905347054234",
-        email: "info@shdanismanlik.com",
+        email: "info@stkdanismanlik.com",
         address: "Ümraniye, İstanbul",
         whatsapp: "905347054234",
         footer_slogan: "Bize Uğrayın, Bürokrasiye Takılmayın",
@@ -68,5 +70,3 @@ module.exports = function(eleventyConfig) {
     markdownTemplateEngine: "njk"
   };
 };
-eleventyConfig.addPassthroughCopy("sitemap.xml");
-eleventyConfig.addPassthroughCopy("robots.txt");
