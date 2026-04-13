@@ -31,7 +31,7 @@ permalink: "/blog.html"
 </script>
 
 <div class="main-content">
-  {% for post in collections.blog | reverse %}
+  {% for post in collections.blog %}
   <article class="blog-post-card">
     <a href="{{ post.url }}" class="post-image-link">
       {% if post.data.image %}
