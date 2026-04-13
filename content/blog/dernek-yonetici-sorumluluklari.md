@@ -1,18 +1,22 @@
 ---
+excerpt: Dernek başkanı ve yönetim kurulu üyelerinin yasal, mali ve cezai
+  sorumluluklarını 5253 sayılı Dernekler Kanunu çerçevesinde detaylı inceleyen
+  kapsamlı rehber.
+image_alt: Dernek yöneticilerinin yasal sorumlulukları — STK Danışmanlık uzman rehberi
 layout: layouts/blog-post.html
-permalink: "/blog/dernek-yonetici-sorumluluklari/"
-title: "Dernek Yöneticilerinin Yasal ve Cezai Sorumlulukları — 2026 Kapsamlı Rehber"
-description: "Dernek başkanı ve yönetim kurulu üyelerinin 5253 sayılı Dernekler Kanunu kapsamında yasal, mali ve cezai sorumlulukları. Beyanname, defter, genel kurul yükümlülükleri. Ümraniye İstanbul."
+permalink: /blog/dernek-yonetici-sorumluluklari/
+title: Dernek Yöneticilerinin Yasal ve Cezai Sorumlulukları — 2026 Kapsamlı Rehber
+image: /img/dernek-beyanname-2026.jpg
 date: 2026-01-04
-category: "Uzman Rehberi"
-image: "/img/blog-mevzuat.webp"
-image_alt: "Dernek yöneticilerinin yasal sorumlulukları — STK Danışmanlık uzman rehberi"
-excerpt: "Dernek başkanı ve yönetim kurulu üyelerinin yasal, mali ve cezai sorumluluklarını 5253 sayılı Dernekler Kanunu çerçevesinde detaylı inceleyen kapsamlı rehber."
 tags:
   - dernek yönetici sorumlulukları
   - dernekler kanunu 32. madde
   - dernek başkanı sorumlulukları
   - dernek yönetim kurulu
+category: Uzman Rehberi
+description: Dernek başkanı ve yönetim kurulu üyelerinin 5253 sayılı Dernekler
+  Kanunu kapsamında yasal, mali ve cezai sorumlulukları. Beyanname, defter,
+  genel kurul yükümlülükleri. Ümraniye İstanbul.
 ---
 
 Dernek yönetim kurulu üyeleri, derneklerinin yasal temsilcileri olarak çok önemli sorumluluklar taşırlar. Bu sorumlulukların gereği gibi yerine getirilmemesi durumunda hem dernekler hem de yöneticiler ciddi hukuki ve mali yaptırımlarla karşılaşabilir.
